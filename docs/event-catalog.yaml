@@ -1,0 +1,190 @@
+version: "1.0.0"
+title: "Universal Domain Event & Telemetry Catalog"
+description: "Event-driven architecture specifications with Kafka topics, payload schemas, and storage sinks"
+
+events:
+  # Auth & Account Security Events
+  - event_name: "auth.user.registered"
+    topic: "social.auth.lifecycle"
+    producer: "services/identity"
+    persistence: [POSTGRESQL, KAFKA, CLICKHOUSE]
+    schema:
+      user_id: "UUID"
+      email: "STRING (Masked)"
+      phone: "STRING (Masked)"
+      country_code: "STRING"
+      registered_at: "TIMESTAMP"
+
+  - event_name: "auth.user.login_succeeded"
+    topic: "social.auth.lifecycle"
+    producer: "services/identity"
+    persistence: [REDIS, CLICKHOUSE]
+    schema:
+      user_id: "UUID"
+      session_id: "UUID"
+      ip_address: "STRING"
+      user_agent: "STRING"
+      device_fingerprint: "STRING"
+      timestamp: "TIMESTAMP"
+
+  - event_name: "auth.user.session_revoked"
+    topic: "social.auth.lifecycle"
+    producer: "services/identity"
+    persistence: [POSTGRESQL, REDIS]
+    schema:
+      user_id: "UUID"
+      session_id: "UUID"
+      revocation_reason: "STRING"
+
+  # Social Graph Events
+  - event_name: "social.friend.requested"
+    topic: "social.graph.events"
+    producer: "services/social-graph"
+    persistence: [POSTGRESQL, KAFKA, NOTIFICATION_QUEUE]
+    schema:
+      sender_id: "UUID"
+      target_id: "UUID"
+      timestamp: "TIMESTAMP"
+
+  - event_name: "social.friend.accepted"
+    topic: "social.graph.events"
+    producer: "services/social-graph"
+    persistence: [POSTGRESQL, REDIS, KAFKA]
+    schema:
+      user1_id: "UUID"
+      user2_id: "UUID"
+      mutual_friends_count: "INT"
+
+  - event_name: "social.user.blocked"
+    topic: "social.graph.events"
+    producer: "services/social-graph"
+    persistence: [POSTGRESQL, REDIS, OPENSEARCH]
+    schema:
+      initiator_id: "UUID"
+      blocked_id: "UUID"
+
+  # Content & Post Feed Events
+  - event_name: "content.post.created"
+    topic: "social.content.post"
+    producer: "services/content"
+    persistence: [POSTGRESQL, OPENSEARCH, KAFKA, FEED_FANOUT_WORKER]
+    schema:
+      post_id: "UUID"
+      author_id: "UUID"
+      visibility: "STRING (PUBLIC|FRIENDS|ONLY_ME|CUSTOM)"
+      content_type: "STRING (TEXT|PHOTO|VIDEO|REEL)"
+      media_urls: "ARRAY<STRING>"
+      created_at: "TIMESTAMP"
+
+  - event_name: "content.post.reacted"
+    topic: "social.content.reactions"
+    producer: "services/feed"
+    persistence: [POSTGRESQL, REDIS, CLICKHOUSE]
+    schema:
+      post_id: "UUID"
+      user_id: "UUID"
+      reaction_type: "STRING (LIKE|LOVE|HAHA|WOW|SAD|ANGRY)"
+      action: "STRING (ADD|REMOVE|CHANGE)"
+
+  - event_name: "content.comment.created"
+    topic: "social.content.comments"
+    producer: "services/content"
+    persistence: [POSTGRESQL, OPENSEARCH, NOTIFICATION_QUEUE]
+    schema:
+      comment_id: "UUID"
+      post_id: "UUID"
+      parent_comment_id: "UUID?"
+      author_id: "UUID"
+      text: "STRING"
+
+  # Messenger & Real-Time Events
+  - event_name: "messenger.message.sent"
+    topic: "social.messenger.messages"
+    producer: "services/messenger"
+    persistence: [POSTGRESQL, REDIS, WEBSOCKET_GATEWAY]
+    schema:
+      message_id: "UUID"
+      conversation_id: "UUID"
+      sender_id: "UUID"
+      content: "STRING"
+      media_attachment_id: "UUID?"
+      sent_at: "TIMESTAMP"
+
+  - event_name: "messenger.message.delivered"
+    topic: "social.messenger.delivery"
+    producer: "services/messenger"
+    persistence: [REDIS, WEBSOCKET_GATEWAY]
+    schema:
+      message_id: "UUID"
+      recipient_id: "UUID"
+      delivered_at: "TIMESTAMP"
+
+  - event_name: "messenger.message.read"
+    topic: "social.messenger.delivery"
+    producer: "services/messenger"
+    persistence: [POSTGRESQL, REDIS, WEBSOCKET_GATEWAY]
+    schema:
+      conversation_id: "UUID"
+      reader_id: "UUID"
+      last_read_message_id: "UUID"
+
+  # Marketplace & Commerce Events
+  - event_name: "marketplace.item.listed"
+    topic: "social.commerce.marketplace"
+    producer: "services/marketplace"
+    persistence: [POSTGRESQL, OPENSEARCH]
+    schema:
+      item_id: "UUID"
+      seller_id: "UUID"
+      title: "STRING"
+      price: "BIGINT"
+      currency: "STRING"
+      location_geo: "POINT"
+      category_id: "STRING"
+
+  - event_name: "marketplace.escrow.funded"
+    topic: "social.commerce.payments"
+    producer: "services/payments"
+    persistence: [POSTGRESQL, CLICKHOUSE]
+    schema:
+      order_id: "UUID"
+      buyer_id: "UUID"
+      seller_id: "UUID"
+      amount: "BIGINT"
+      escrow_status: "STRING (HELD|RELEASED|REFUNDED)"
+
+  # Advertising & Auction Events
+  - event_name: "ads.impression.served"
+    topic: "social.ads.telemetry"
+    producer: "services/ads"
+    persistence: [CLICKHOUSE, REDIS_BUDGET_PACER]
+    schema:
+      auction_id: "UUID"
+      ad_id: "UUID"
+      campaign_id: "UUID"
+      advertiser_id: "UUID"
+      viewer_id: "UUID"
+      clearing_price_micros: "BIGINT"
+      timestamp: "TIMESTAMP"
+
+  - event_name: "ads.conversion.tracked"
+    topic: "social.ads.telemetry"
+    producer: "services/ads"
+    persistence: [CLICKHOUSE, POSTGRESQL]
+    schema:
+      ad_id: "UUID"
+      conversion_type: "STRING (PURCHASE|SIGNUP|LEAD)"
+      attribution_window: "STRING (1D_CLICK|7D_VIEW)"
+
+  # Moderation & Trust Events
+  - event_name: "moderation.report.submitted"
+    topic: "social.moderation.tickets"
+    producer: "services/moderation"
+    persistence: [POSTGRESQL, NOTIFICATION_QUEUE]
+    schema:
+      report_id: "UUID"
+      reporter_id: "UUID"
+      target_type: "STRING (POST|USER|COMMENT|MESSAGE|LISTING)"
+      target_id: "UUID"
+      reason_category: "STRING"
+      priority_score: "INT"

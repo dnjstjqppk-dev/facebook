@@ -1,0 +1,21 @@
+{
+  "name": "facebook-parity-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise-grade Global Social Network Master Monorepo",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

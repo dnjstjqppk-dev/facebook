@@ -1,0 +1,51 @@
+Feature_ID,Category,Feature_Name,Parity_Status,Frontend_Module,Backend_Service,Database_Entity,Verification_Suite
+FEAT-001,Auth,Email and Phone Registration,SPECIFIED,apps/web/pages/register,services/identity,users/auth_identities,tests/e2e/auth/registration.spec.ts
+FEAT-002,Auth,Password and Social Login,SPECIFIED,apps/web/pages/login,services/identity,users/user_credentials,tests/e2e/auth/login.spec.ts
+FEAT-003,Auth,Multi-Factor Authentication (MFA),SPECIFIED,apps/web/pages/auth/mfa,services/identity,auth_mfa_factors,tests/unit/identity/mfa_test.go
+FEAT-004,Auth,Session and Device Management,SPECIFIED,apps/web/pages/settings/security,services/identity,user_sessions,tests/integration/identity/session_test.go
+FEAT-005,Profile,User Profile Timeline,SPECIFIED,apps/web/pages/profile,services/profile,user_profiles/timeline_posts,tests/e2e/profile/timeline.spec.ts
+FEAT-006,Profile,Professional Mode / Secondary Profiles,SPECIFIED,apps/web/pages/creator,services/profile,professional_profiles,tests/integration/profile/pro_mode_test.go
+FEAT-007,SocialGraph,Friendship Lifecycle,SPECIFIED,apps/web/pages/friends,services/social-graph,friend_requests/friendships,tests/integration/social/friendship_test.go
+FEAT-008,SocialGraph,Follow and Unfollow,SPECIFIED,apps/web/pages/profile,services/social-graph,user_follows,tests/unit/social/follow_test.go
+FEAT-009,SocialGraph,Block and Restrict,SPECIFIED,apps/web/pages/settings/privacy,services/social-graph,user_blocks,tests/integration/social/block_test.go
+FEAT-010,Feed,News Feed Algorithm (Chronological & Ranked),SPECIFIED,apps/web/pages/index,services/feed,feed_items/redis_timeline,tests/integration/feed/ranking_test.go
+FEAT-011,Feed,Post Creation (Text/Media/Rich),SPECIFIED,apps/web/components/composer,services/content,posts/post_media,tests/e2e/feed/composer.spec.ts
+FEAT-012,Feed,Reactions (Like Love Haha Wow Sad Angry),SPECIFIED,apps/web/components/post/Reactions,services/feed,post_reactions,tests/integration/feed/reaction_counter_test.go
+FEAT-013,Feed,Comments and Nested Replies,SPECIFIED,apps/web/components/post/Comments,services/content,comments/comment_replies,tests/e2e/feed/comments.spec.ts
+FEAT-014,Feed,Post Reshare and Quote Post,SPECIFIED,apps/web/components/post/ShareDialog,services/content,post_reshares,tests/integration/content/reshare_test.go
+FEAT-015,Feed,Saved Posts and Collections,SPECIFIED,apps/web/pages/saved,services/content,saved_collections/saved_items,tests/e2e/saved/collections.spec.ts
+FEAT-016,Feed,Memories (On This Day),SPECIFIED,apps/web/pages/memories,services/feed,feed_memories_cache,tests/integration/feed/memories_test.go
+FEAT-017,Media,Photo Albums and High-Res Viewer,SPECIFIED,apps/web/pages/media/photos,services/media,media_albums/media_files,tests/e2e/media/album_upload.spec.ts
+FEAT-018,Media,Video Hub and Adaptive Streaming,SPECIFIED,apps/web/pages/watch,services/media,video_transcode_jobs,tests/integration/media/hls_stream_test.go
+FEAT-019,Media,Reels (Short-form Vertical Video),SPECIFIED,apps/web/pages/reels,services/media,reels/reel_music,tests/e2e/media/reels_playback.spec.ts
+FEAT-020,Media,Stories (24-Hour Ephemeral Media),SPECIFIED,apps/web/pages/stories,services/media,stories/story_viewers,tests/integration/media/story_ttl_test.go
+FEAT-021,Media,Live Video Streaming,SPECIFIED,apps/web/pages/live,services/media,live_broadcasts,tests/integration/media/live_rtmp_test.go
+FEAT-022,Messaging,Messenger 1:1 and Group Chat,SPECIFIED,apps/web/pages/messages,services/messenger,conversations/messages,tests/integration/messenger/chat_socket_test.go
+FEAT-023,Messaging,Voice and Video Calling,SPECIFIED,apps/web/components/messenger/CallModal,services/messenger,call_sessions,tests/unit/messenger/webrtc_signaling_test.go
+FEAT-024,Messaging,Broadcast Channels,SPECIFIED,apps/web/pages/channels,services/messenger,broadcast_channels,tests/integration/messenger/channel_test.go
+FEAT-025,Groups,Community Groups (Public/Private),SPECIFIED,apps/web/pages/groups,services/groups,groups/group_memberships,tests/e2e/groups/group_management.spec.ts
+FEAT-026,Groups,Group Community Chats,SPECIFIED,apps/web/pages/groups/chats,services/groups,group_chat_threads,tests/integration/groups/group_chat_test.go
+FEAT-027,Pages,Brand and Business Pages,SPECIFIED,apps/web/pages/pages,services/pages,pages/page_roles,tests/e2e/pages/page_admin.spec.ts
+FEAT-028,Pages,Page Insights and Analytics,SPECIFIED,apps/web/pages/pages/insights,services/analytics,clickhouse_page_metrics,tests/integration/analytics/metrics_rollup_test.go
+FEAT-029,Events,Online and In-Person Events,SPECIFIED,apps/web/pages/events,services/events,events/event_attendees,tests/e2e/events/event_rsvp.spec.ts
+FEAT-030,Marketplace,C2C Listing and Item Discovery,SPECIFIED,apps/web/pages/marketplace,services/marketplace,marketplace_items,tests/e2e/marketplace/listing_search.spec.ts
+FEAT-031,Marketplace,Orders and Escrow Payment,SPECIFIED,apps/web/pages/marketplace/checkout,services/payments,escrow_orders/payment_intents,tests/integration/payments/escrow_ledger_test.go
+FEAT-032,Marketplace,Seller Center and Inventory Management,SPECIFIED,apps/web/pages/marketplace/seller,services/marketplace,seller_profiles/inventory,tests/e2e/marketplace/seller_portal.spec.ts
+FEAT-033,Creator,Professional Creator Dashboard,SPECIFIED,apps/web/pages/creator/studio,services/creator,creator_monetization_states,tests/e2e/creator/studio_metrics.spec.ts
+FEAT-034,Creator,Stars and Fan Subscriptions,SPECIFIED,apps/web/components/creator/Tipping,services/payments,fan_subscriptions/star_balances,tests/integration/payments/stars_ledger_test.go
+FEAT-035,Business,Business Portfolio / Meta Business Suite,SPECIFIED,apps/web/pages/business,services/business,business_portfolios/asset_bindings,tests/e2e/business/portfolio_rbac.spec.ts
+FEAT-036,Business,Partner and Agency Asset Delegation,SPECIFIED,apps/web/pages/business/partners,services/business,agency_partnerships,tests/integration/business/delegation_test.go
+FEAT-037,Ads,Ads Manager (Campaign AdSet Ad Hierarchy),SPECIFIED,apps/web/pages/adsmanager,services/ads,campaigns/ad_sets/ads,tests/e2e/ads/campaign_creation.spec.ts
+FEAT-038,Ads,Audience Targeting and Exclusions,SPECIFIED,apps/web/components/ads/AudiencePicker,services/ads,ad_audiences,tests/unit/ads/audience_matcher_test.go
+FEAT-039,Ads,Ad Auction and Real-Time Delivery Engine,SPECIFIED,services/ads/engine,services/ads,redis_budget_reservations,tests/integration/ads/auction_pacing_test.go
+FEAT-040,Ads,Ad Transparency and Public Ad Library,SPECIFIED,apps/web/pages/adlibrary,services/ads,ad_library_public_index,tests/e2e/ads/public_ad_library.spec.ts
+FEAT-041,Developer,Developer App Portal and Graph API,SPECIFIED,apps/web/pages/developers,services/developer,developer_apps/api_keys,tests/integration/developer/graph_api_auth_test.go
+FEAT-042,Moderation,Content Reporting and Review Queue,SPECIFIED,apps/web/pages/super-admin/moderation,services/moderation,moderation_tickets/reports,tests/e2e/moderation/review_workflow.spec.ts
+FEAT-043,Admin,Platform Super Admin Console,SPECIFIED,apps/web/pages/super-admin,services/admin,admin_audit_logs,tests/e2e/admin/super_admin_security.spec.ts
+FEAT-044,Compliance,Download Your Information (GDPR/PIPA),SPECIFIED,apps/web/pages/settings/download-data,services/identity,gdpr_export_tasks,tests/integration/identity/gdpr_export_worker_test.go
+FEAT-045,Compliance,Account Deactivation and Scheduled Deletion,SPECIFIED,apps/web/pages/settings/delete-account,services/identity,account_retention_schedules,tests/integration/identity/purge_test.go
+FEAT-046,Special,Gaming Hub and Live Streams,SPECIFIED,apps/web/pages/gaming,services/media,gaming_streams/game_titles,tests/e2e/gaming/live_chat.spec.ts
+FEAT-047,Special,Dating (Opt-in Distinct Profile),SPECIFIED,apps/mobile/pages/dating,services/dating,dating_profiles/dating_matches,tests/integration/dating/age_isolation_test.go
+FEAT-048,Special,Fundraisers and Non-Profit Giving,SPECIFIED,apps/web/pages/fundraisers,services/payments,fundraiser_campaigns/donations,tests/e2e/fundraisers/donation_flow.spec.ts
+FEAT-049,Search,Unified Global Search,SPECIFIED,apps/web/pages/search,services/search,opensearch_universal_index,tests/integration/search/universal_query_test.go
+FEAT-050,Notifications,Multi-Channel Notification Hub,SPECIFIED,apps/web/pages/notifications,services/notifications,user_notifications/device_tokens,tests/integration/notifications/dispatch_test.go

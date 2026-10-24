@@ -1,0 +1,199 @@
+version: "1.0.0"
+title: "Universal Screen & Route Registry for Global Social Network"
+description: "Cross-platform screen identifier, route specification, permissions, and layout states"
+
+screens:
+  # Authentication & Onboarding
+  - screen_id: SCR-AUTH-001
+    name: "Login Screen"
+    web_route: "/login"
+    mobile_route: "auth/login"
+    auth_required: false
+    layout: "AuthLayout"
+    states: [EMPTY, SUBMITTING, ERROR_CREDENTIALS, MFA_CHALLENGE]
+
+  - screen_id: SCR-AUTH-002
+    name: "Registration & OTP Screen"
+    web_route: "/register"
+    mobile_route: "auth/register"
+    auth_required: false
+    layout: "AuthLayout"
+    states: [STEP_BASIC_INFO, STEP_PHONE_EMAIL_OTP, STEP_SECURITY_SETUP]
+
+  - screen_id: SCR-AUTH-003
+    name: "Password Recovery Screen"
+    web_route: "/recover"
+    mobile_route: "auth/recover"
+    auth_required: false
+    layout: "AuthLayout"
+    states: [SEARCH_ACCOUNT, OTP_VERIFY, RESET_PASSWORD]
+
+  # Main Feed & Timeline
+  - screen_id: SCR-FEED-001
+    name: "Home News Feed"
+    web_route: "/"
+    mobile_route: "home/feed"
+    auth_required: true
+    layout: "ThreeColumnAppLayout"
+    states: [LOADING_SKELETON, FEED_STREAM, EMPTY_FEED_INVITE, ERROR_REFRESH]
+
+  - screen_id: SCR-POST-001
+    name: "Post Detail & Comments View"
+    web_route: "/posts/:postId"
+    mobile_route: "posts/detail"
+    auth_required: true
+    layout: "SinglePostModalLayout"
+    states: [LOADING, CONTENT, NOT_FOUND_OR_DELETED, PRIVATE_RESTRICTED]
+
+  - screen_id: SCR-PROFILE-001
+    name: "User Profile Timeline"
+    web_route: "/profile/:userId"
+    mobile_route: "profile/user"
+    auth_required: true
+    layout: "ProfileLayout"
+    states: [LOADING, ACTIVE_PROFILE, BLOCKED_OR_RESTRICTED, DEACTIVATED]
+
+  # Social Graph
+  - screen_id: SCR-FRIENDS-001
+    name: "Friends & Friend Requests Hub"
+    web_route: "/friends"
+    mobile_route: "friends/hub"
+    auth_required: true
+    layout: "SidebarContentLayout"
+    states: [LOADING, REQUESTS_LIST, ALL_FRIENDS_LIST, SUGGESTIONS_LIST]
+
+  # Media & Stories & Reels & Watch
+  - screen_id: SCR-STORY-001
+    name: "Stories Fullscreen Viewer"
+    web_route: "/stories/:storyId"
+    mobile_route: "stories/viewer"
+    auth_required: true
+    layout: "FullscreenDarkLayout"
+    states: [PLAYING, PAUSED, VIEWERS_TRAY, EXPIRED]
+
+  - screen_id: SCR-REELS-001
+    name: "Reels Vertical Feed"
+    web_route: "/reels"
+    mobile_route: "reels/feed"
+    auth_required: true
+    layout: "FullscreenVerticalScrollLayout"
+    states: [VIDEO_BUFFERING, PLAYING, COMMENTS_DRAWER, AUDIO_PAGE]
+
+  - screen_id: SCR-WATCH-001
+    name: "Video Watch Hub"
+    web_route: "/watch"
+    mobile_route: "watch/home"
+    auth_required: true
+    layout: "SidebarContentLayout"
+    states: [LOADING, WATCH_FEED, LIVE_STREAM_GRID, SAVED_VIDEOS]
+
+  # Messaging
+  - screen_id: SCR-MESSENGER-001
+    name: "Messenger Full Inbox"
+    web_route: "/messages"
+    mobile_route: "messenger/inbox"
+    auth_required: true
+    layout: "TwoColumnChatLayout"
+    states: [THREAD_LIST, ACTIVE_CONVERSATION, MEDIA_GALLERY, CALL_OVERLAY]
+
+  # Groups & Communities
+  - screen_id: SCR-GROUP-001
+    name: "Group Feed and Discussion"
+    web_route: "/groups/:groupId"
+    mobile_route: "groups/feed"
+    auth_required: true
+    layout: "GroupDetailLayout"
+    states: [LOADING, MEMBER_VIEW, NON_MEMBER_PREVIEW, PENDING_APPROVAL]
+
+  # Business Pages
+  - screen_id: SCR-PAGE-001
+    name: "Page Public Profile & Feed"
+    web_route: "/pages/:pageId"
+    mobile_route: "pages/profile"
+    auth_required: true
+    layout: "PageDetailLayout"
+    states: [VISITOR_VIEW, ADMIN_MODE_TOGGLED, REVIEWS_TAB, ABOUT_TAB]
+
+  # Marketplace
+  - screen_id: SCR-MKT-001
+    name: "Marketplace Discovery Hub"
+    web_route: "/marketplace"
+    mobile_route: "marketplace/home"
+    auth_required: true
+    layout: "MarketplaceGridLayout"
+    states: [CATEGORY_FILTERS, LOCATION_RADIAL_SELECTOR, LISTINGS_GRID]
+
+  - screen_id: SCR-MKT-002
+    name: "Marketplace Listing Detail & Checkout"
+    web_route: "/marketplace/item/:itemId"
+    mobile_route: "marketplace/item_detail"
+    auth_required: true
+    layout: "ListingDetailLayout"
+    states: [ITEM_INFO, SELLER_RATINGS, ESCROW_BUY_NOW, CHAT_OFFER_MODAL]
+
+  # Events
+  - screen_id: SCR-EVENT-001
+    name: "Events Discovery & Calendar"
+    web_route: "/events"
+    mobile_route: "events/hub"
+    auth_required: true
+    layout: "EventsCalendarLayout"
+    states: [CALENDAR_VIEW, POPULAR_NEAR_ME, HOSTING_LIST]
+
+  # Notifications Hub
+  - screen_id: SCR-NOTIF-001
+    name: "Notifications Center"
+    web_route: "/notifications"
+    mobile_route: "notifications/center"
+    auth_required: true
+    layout: "SidebarContentLayout"
+    states: [UNREAD_FILTER, ALL_NOTIFICATIONS, NOTIFICATION_SETTINGS]
+
+  # Global Search
+  - screen_id: SCR-SEARCH-001
+    name: "Unified Search Results"
+    web_route: "/search"
+    mobile_route: "search/results"
+    auth_required: true
+    layout: "SearchResultsLayout"
+    states: [TAB_ALL, TAB_PEOPLE, TAB_POSTS, TAB_PAGES, TAB_GROUPS, TAB_MARKETPLACE]
+
+  # Professional & Creator Dashboard
+  - screen_id: SCR-CREATOR-001
+    name: "Professional Creator Studio"
+    web_route: "/creator"
+    mobile_route: "creator/studio"
+    auth_required: true
+    required_roles: [ROLE_CREATOR]
+    layout: "CreatorStudioLayout"
+    states: [MONETIZATION_STATUS, PERFORMANCE_CHARTS, PAYOUT_HISTORY]
+
+  # Meta Business Suite
+  - screen_id: SCR-BIZ-001
+    name: "Meta Business Portfolio Dashboard"
+    web_route: "/business"
+    mobile_route: "business/suite"
+    auth_required: true
+    required_roles: [ROLE_BUSINESS_ADMIN, ROLE_PAGE_ADMIN, ROLE_AGENCY]
+    layout: "BusinessEnterpriseLayout"
+    states: [ASSET_SELECTOR, TEAM_MANAGEMENT, CROSS_POST_PLANNER]
+
+  # Ads Manager
+  - screen_id: SCR-ADS-001
+    name: "Ads Campaign Manager"
+    web_route: "/adsmanager"
+    mobile_route: "adsmanager/dashboard"
+    auth_required: true
+    required_roles: [ROLE_ADVERTISER, ROLE_AGENCY]
+    layout: "AdsManagerTableLayout"
+    states: [CAMPAIGNS_TAB, ADSETS_TAB, ADS_TAB, REALTIME_PERFORMANCE]
+
+  # Platform Super Admin Console
+  - screen_id: SCR-ADMIN-001
+    name: "Platform Super Admin Console"
+    web_route: "/super-admin"
+    mobile_route: "n/a"
+    auth_required: true
+    required_roles: [ROLE_SUPER_ADMIN]
+    layout: "AdminConsoleLayout"
+    states: [SYSTEM_HEALTH, MODERATION_SLA, USER_MANAGEMENT, AUDIT_LOGS]

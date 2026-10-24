@@ -1,0 +1,224 @@
+version: "1.0.0"
+description: "Comprehensive RBAC & ABAC Role and Permission Matrix for Global Social Network"
+last_updated: "2026-10-24"
+
+roles:
+  - id: ROLE_ANONYMOUS
+    name: "비로그인 방문자 (Guest)"
+    description: "인증되지 않은 공개 페이지 열람자"
+    permissions:
+      - auth.register
+      - auth.login
+      - auth.password_reset
+      - post.view_public
+      - page.view_public
+      - event.view_public
+      - legal.view_terms
+
+  - id: ROLE_USER
+    name: "일반 사용자 (Standard User)"
+    description: "이메일/전화번호 인증을 마친 표준 성인 개인 회원"
+    inherits: [ROLE_ANONYMOUS]
+    permissions:
+      - user.profile.read
+      - user.profile.update_self
+      - post.create
+      - post.view_friends
+      - post.react
+      - post.comment
+      - post.share
+      - friend.request
+      - friend.accept
+      - friend.block
+      - follow.create
+      - story.create
+      - reel.create
+      - chat.send_1on1
+      - chat.create_group
+      - group.join
+      - page.follow
+      - event.rsvp
+      - marketplace.browse
+      - marketplace.chat_seller
+      - marketplace.buy
+      - moderation.report_content
+
+  - id: ROLE_MINOR_USER
+    name: "미성년자 사용자 (Minor User: 14~18세)"
+    description: "청소년 보호법 및 글로벌 아동 보호 규정 적용 계정"
+    inherits: [ROLE_ANONYMOUS]
+    permissions:
+      - user.profile.read
+      - user.profile.update_self
+      - post.create
+      - post.react
+      - post.comment
+      - friend.request_mutual_only
+      - chat.send_friends_only
+      - moderation.report_content
+    restrictions:
+      - dating.access_forbidden
+      - ads.behavioral_targeting_forbidden
+      - marketplace.financial_payout_restricted
+      - profile.search_indexing_restricted
+
+  - id: ROLE_CREATOR
+    name: "프로페셔널 크리에이터 (Professional Creator)"
+    description: "전문가 모드가 활성화된 콘텐츠 크리에이터"
+    inherits: [ROLE_USER]
+    permissions:
+      - creator.dashboard.view
+      - creator.analytics.read
+      - creator.monetization.view
+      - creator.stars.receive
+      - creator.subscriptions.manage
+      - creator.broadcast_channel.create
+      - live.stream.broadcast
+
+  - id: ROLE_PAGE_ADMIN
+    name: "페이지 최고 관리자 (Page Administrator)"
+    description: "공식 브랜드/비즈니스 페이지의 최고 관리 권한"
+    inherits: [ROLE_USER]
+    permissions:
+      - page.settings.update
+      - page.roles.manage
+      - page.post.publish
+      - page.post.delete
+      - page.inbox.respond
+      - page.insights.view
+      - page.ad.boost
+      - page.delete
+
+  - id: ROLE_PAGE_EDITOR
+    name: "페이지 편집자 (Page Editor)"
+    inherits: [ROLE_USER]
+    permissions:
+      - page.post.publish
+      - page.inbox.respond
+      - page.insights.view
+
+  - id: ROLE_GROUP_ADMIN
+    name: "그룹 최고 관리자 (Group Administrator)"
+    inherits: [ROLE_USER]
+    permissions:
+      - group.settings.update
+      - group.members.approve
+      - group.members.ban
+      - group.posts.moderate
+      - group.rules.update
+      - group.chat.create
+
+  - id: ROLE_GROUP_MODERATOR
+    name: "그룹 모더레이터 (Group Moderator)"
+    inherits: [ROLE_USER]
+    permissions:
+      - group.members.approve
+      - group.posts.moderate
+
+  - id: ROLE_SELLER
+    name: "마켓플레이스 판매자 (Marketplace Seller)"
+    inherits: [ROLE_USER]
+    permissions:
+      - marketplace.item.create
+      - marketplace.item.update
+      - marketplace.item.delete
+      - marketplace.order.fulfill
+      - marketplace.escrow.payout_request
+      - marketplace.dispute.respond
+
+  - id: ROLE_ADVERTISER
+    name: "광고주 (Advertiser)"
+    inherits: [ROLE_USER]
+    permissions:
+      - ads.account.view
+      - ads.campaign.create
+      - ads.campaign.manage
+      - ads.billing.manage
+      - ads.pixel.manage
+      - ads.reports.export
+
+  - id: ROLE_AGENCY
+    name: "대행사 파트너 (Agency Partner)"
+    inherits: [ROLE_USER]
+    permissions:
+      - business.delegated_assets.view
+      - ads.campaign.manage_delegated
+      - page.post.publish_delegated
+
+  - id: ROLE_BUSINESS_ADMIN
+    name: "비즈니스 포트폴리오 관리자 (Business Suite Admin)"
+    inherits: [ROLE_USER]
+    permissions:
+      - business.portfolio.manage
+      - business.assets.assign
+      - business.members.invite
+      - business.audit_log.view
+      - business.billing.manage
+
+  - id: ROLE_DEVELOPER
+    name: "공식 개발자 (Developer Partner)"
+    inherits: [ROLE_USER]
+    permissions:
+      - developer.app.create
+      - developer.app.credentials.manage
+      - developer.webhooks.configure
+      - developer.graph_api.read_scoped
+      - developer.test_users.manage
+
+  - id: ROLE_SUPPORT_AGENT
+    name: "고객지원 상담원 (Customer Support)"
+    permissions:
+      - support.ticket.view
+      - support.ticket.reply
+      - support.user_status.inspect
+      - support.audit_log.append
+
+  - id: ROLE_MODERATOR
+    name: "신뢰/안전 모더레이터 (Trust & Safety Reviewer)"
+    permissions:
+      - moderation.queue.view
+      - moderation.ticket.claim
+      - moderation.content.take_down
+      - moderation.user.warn
+      - moderation.user.temp_suspend
+      - moderation.appeal.review
+
+  - id: ROLE_BILLING_OFFICER
+    name: "정산/결제 담당자 (Financial Compliance Officer)"
+    permissions:
+      - finance.ledger.view
+      - finance.payout.approve
+      - finance.dispute.arbitrate
+      - finance.tax_doc.review
+
+  - id: ROLE_SUPER_ADMIN
+    name: "플랫폼 최고 관리자 (Platform Super Admin)"
+    permissions:
+      - admin.system.config
+      - admin.rbac.manage
+      - admin.user.permanent_ban
+      - admin.audit.view_full
+      - admin.feature_flags.toggle
+      - admin.compliance.export_dpa
+
+abac_attributes:
+  user_attributes:
+    - id
+    - age
+    - country_code
+    - kyc_verified
+    - professional_mode
+    - strike_count
+    - mfa_enabled
+  resource_attributes:
+    - owner_id
+    - visibility: [PUBLIC, FRIENDS, FRIENDS_EXCEPT, CUSTOM, ONLY_ME]
+    - country_restrictions
+    - min_age_requirement
+    - is_sensitive_content
+    - moderation_status: [PENDING, APPROVED, FLAGGED, REMOVED]
+  environment_attributes:
+    - ip_reputation
+    - geo_location
+    - device_fingerprint
+    - current_timestamp

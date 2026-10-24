@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package social.v1;
+
+option go_package = "github.com/dnjstjqppk-dev/facebook/proto/social/v1;socialv1";
+
+service IdentityService {
+  rpc Register (RegisterRequest) returns (AuthResponse);
+  rpc Login (LoginRequest) returns (AuthResponse);
+  rpc RefreshToken (RefreshTokenRequest) returns (AuthResponse);
+  rpc RevokeSession (RevokeSessionRequest) returns (RevokeSessionResponse);
+  rpc GetProfile (GetProfileRequest) returns (UserProfileResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string phone_number = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string birth_date = 6;
+  string gender = 7;
+}
+
+message LoginRequest {
+  string identifier = 1; // email or phone
+  string password = 2;
+  string mfa_code = 3;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RevokeSessionRequest {
+  string session_id = 1;
+}
+
+message RevokeSessionResponse {
+  bool success = 1;
+}
+
+message AuthResponse {
+  string user_id = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  int64 expires_at = 4;
+  string role = 5;
+  bool mfa_required = 6;
+}
+
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message UserProfileResponse {
+  string user_id = 1;
+  string username = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string bio = 5;
+  string avatar_url = 6;
+  string cover_photo_url = 7;
+  bool is_professional = 8;
+}

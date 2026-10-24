@@ -1,0 +1,163 @@
+version: "1.0.0"
+description: "Master Screen Registry across Web, Mobile, and Administrative Portals"
+applications:
+  user_web:
+    base_url: "https://web.social.internal"
+    screens:
+      - id: "SCR-WEB-001"
+        name: "PublicLanding"
+        route: "/"
+        layout: "PublicLayout"
+        auth_required: false
+        components: ["HeroSection", "LoginForm", "QuickRegisterModal", "LanguagePicker"]
+        states: ["default", "submitting", "error_alert"]
+
+      - id: "SCR-WEB-002"
+        name: "HomeFeed"
+        route: "/feed"
+        layout: "MainAppLayout"
+        auth_required: true
+        components: ["LeftSidebar", "StoryReel", "PostComposer", "FeedStream", "RightContactsSidebar"]
+        states: ["loading_skeleton", "has_content", "empty_no_friends", "infinite_loading", "network_error"]
+
+      - id: "SCR-WEB-003"
+        name: "UserProfile"
+        route: "/users/:username"
+        layout: "ProfileLayout"
+        auth_required: true
+        components: ["CoverHeader", "AvatarBadge", "BioCard", "FriendshipActionButtons", "ProfileTabs", "UserTimeline"]
+        states: ["loading", "found", "blocked", "user_not_found_404", "private_profile_masked"]
+
+      - id: "SCR-WEB-004"
+        name: "FriendsCenter"
+        route: "/friends"
+        layout: "MainAppLayout"
+        auth_required: true
+        components: ["PendingRequestsList", "FriendSuggestionsGrid", "AllFriendsDirectory"]
+        states: ["loading", "empty_requests", "empty_suggestions"]
+
+      - id: "SCR-WEB-005"
+        name: "MessengerMain"
+        route: "/messages"
+        layout: "MessengerLayout"
+        auth_required: true
+        components: ["ConversationSidebar", "ActiveChatHeader", "MessageThreadList", "ComposerTray", "MediaPreviewDrawer"]
+        states: ["connecting_ws", "active_chat", "empty_no_conversations", "calling_overlay"]
+
+      - id: "SCR-WEB-006"
+        name: "MarketplaceFeed"
+        route: "/marketplace"
+        layout: "MainAppLayout"
+        auth_required: true
+        components: ["CategoryFilterBar", "LocationDistanceSelector", "ListingCardGrid", "CreateListingButton"]
+        states: ["loading_skeleton", "results_found", "empty_location_results"]
+
+      - id: "SCR-WEB-007"
+        name: "MarketplaceDetail"
+        route: "/marketplace/item/:id"
+        layout: "DetailLayout"
+        auth_required: true
+        components: ["MediaCarousel", "PriceTagHeader", "SellerProfileSnippet", "ChatWithSellerButton", "ReportListingModal"]
+        states: ["loading", "available", "pending_sold", "sold_out", "not_found"]
+
+      - id: "SCR-WEB-008"
+        name: "GroupsHub"
+        route: "/groups"
+        layout: "MainAppLayout"
+        auth_required: true
+        components: ["MyGroupsList", "DiscoverGroupsGrid", "CreateGroupModal"]
+        states: ["loading", "has_groups", "empty_groups"]
+
+      - id: "SCR-WEB-009"
+        name: "GroupDetail"
+        route: "/groups/:groupId"
+        layout: "GroupLayout"
+        auth_required: true
+        components: ["GroupBanner", "MembershipStatus", "GroupFeed", "MemberList", "PendingAdminQueueModal"]
+        states: ["public_preview", "member_feed", "pending_approval", "banned_from_group"]
+
+      - id: "SCR-WEB-010"
+        name: "NotificationsCenter"
+        route: "/notifications"
+        layout: "MainAppLayout"
+        auth_required: true
+        components: ["FilterPills", "NotificationCardList", "MarkAllReadAction"]
+        states: ["loading", "unread_items", "empty_all_caught_up"]
+
+      - id: "SCR-WEB-011"
+        name: "ReelsHub"
+        route: "/reels"
+        layout: "ImmersiveMediaLayout"
+        auth_required: true
+        components: ["VerticalReelPlayer", "AudioAttributionPill", "ReactionColumn", "CommentDrawer"]
+        states: ["video_buffering", "playing", "sound_muted_toggle"]
+
+      - id: "SCR-WEB-012"
+        name: "AccountSettings"
+        route: "/settings"
+        layout: "SettingsLayout"
+        auth_required: true
+        components: ["SecurityNav", "PasswordChangeSection", "TwoFactorConfig", "ActiveSessionsList", "DeleteAccountModal"]
+        states: ["idle", "updating", "mfa_challenge_active"]
+
+  mobile_flutter:
+    package: "com.social.app"
+    screens:
+      - id: "SCR-MOB-001"
+        name: "SplashScreen"
+        route: "/splash"
+        components: ["BrandAnimatedLogo", "AuthTokenResolver"]
+      - id: "SCR-MOB-002"
+        name: "MobileBottomTabRoot"
+        route: "/tabs"
+        components: ["TabFeed", "TabFriends", "TabWatch", "TabMarket", "TabNotifications", "TabMenu"]
+      - id: "SCR-MOB-003"
+        name: "StoryViewer"
+        route: "/story/:storyId"
+        components: ["ProgressBarTimer", "ImageVideoRenderer", "StoryReplyBar"]
+      - id: "SCR-MOB-004"
+        name: "CameraRecordingStudio"
+        route: "/camera/reels"
+        components: ["LiveCameraPreview", "TimerSelector", "MusicLibraryDrawer", "EffectFilterStrip"]
+
+  admin_console:
+    base_url: "https://admin.social.internal"
+    screens:
+      - id: "SCR-ADM-001"
+        name: "StaffLogin"
+        route: "/auth/staff-login"
+        auth_required: false
+      - id: "SCR-ADM-002"
+        name: "ModerationQueue"
+        route: "/moderation/queue"
+        auth_required: true
+        required_role: "ROLE_MODERATOR_SAFETY"
+      - id: "SCR-ADM-003"
+        name: "UserInvestigator"
+        route: "/users/audit/:userId"
+        auth_required: true
+        required_role: "ROLE_SUPPORT_AGENT"
+      - id: "SCR-ADM-004"
+        name: "SystemFeatureFlags"
+        route: "/system/flags"
+        auth_required: true
+        required_role: "ROLE_PLATFORM_ADMIN"
+
+  business_center:
+    base_url: "https://business.social.internal"
+    screens:
+      - id: "SCR-BIZ-001"
+        name: "AdsManagerDashboard"
+        route: "/ads/manage"
+        auth_required: true
+        required_role: "ROLE_ADVERTISER"
+      - id: "SCR-BIZ-002"
+        name: "CampaignCreator"
+        route: "/ads/create"
+        auth_required: true
+        required_role: "ROLE_ADVERTISER"
+      - id: "SCR-BIZ-003"
+        name: "BusinessAssetManager"
+        route: "/business/settings/assets"
+        auth_required: true
+        required_role: "ROLE_BUSINESS_OWNER"
