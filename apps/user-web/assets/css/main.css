@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nova-bg: #f0f2f5;
+  --nova-card: #ffffff;
+  --nova-primary: #1b64f2;
+  --nova-text-main: #050505;
+  --nova-text-muted: #65676b;
+  --nova-border: #e4e6eb;
+}
+
+body {
+  background-color: var(--nova-bg);
+  color: var(--nova-text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
