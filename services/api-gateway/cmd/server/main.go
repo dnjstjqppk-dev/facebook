@@ -19,14 +19,26 @@ func main() {
 		identityURL = "http://localhost:8081"
 	}
 
+	socialGraphURL := os.Getenv("SOCIAL_GRAPH_SERVICE_URL")
+	if socialGraphURL == "" {
+		socialGraphURL = "http://localhost:8082"
+	}
+
+	profilesURL := os.Getenv("PROFILES_SERVICE_URL")
+	if profilesURL == "" {
+		profilesURL = "http://localhost:8083"
+	}
+
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		jwtSecret = "nova-enterprise-secure-jwt-secret-key-32chars"
 	}
 
 	cfg := router.GatewayConfig{
-		IdentityServiceURL: identityURL,
-		JWTSecret:          jwtSecret,
+		IdentityServiceURL:    identityURL,
+		SocialGraphServiceURL: socialGraphURL,
+		ProfilesServiceURL:    profilesURL,
+		JWTSecret:             jwtSecret,
 	}
 
 	handler := router.NewGatewayRouter(cfg)

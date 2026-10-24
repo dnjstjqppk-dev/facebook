@@ -12,8 +12,10 @@ import (
 )
 
 type GatewayConfig struct {
-	IdentityServiceURL string
-	JWTSecret          string
+	IdentityServiceURL    string
+	SocialGraphServiceURL string
+	ProfilesServiceURL    string
+	JWTSecret             string
 }
 
 func NewGatewayRouter(cfg GatewayConfig) http.Handler {
@@ -34,10 +36,28 @@ func NewGatewayRouter(cfg GatewayConfig) http.Handler {
 	})
 
 	// Reverse proxy to Identity Service
-	identityURL, err := url.Parse(cfg.IdentityServiceURL)
-	if err == nil {
-		proxy := httputil.NewSingleHostReverseProxy(identityURL)
-		mux.Handle("/api/v1/auth/", proxy)
+	if cfg.IdentityServiceURL != "" {
+		if u, err := url.Parse(cfg.IdentityServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/auth/", proxy)
+		}
+	}
+
+	// Reverse proxy to Social Graph Service
+	if cfg.SocialGraphServiceURL != "" {
+		if u, err := url.Parse(cfg.SocialGraphServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/friends/", proxy)
+			mux.Handle("/api/v1/users/block", proxy)
+		}
+	}
+
+	// Reverse proxy to Profiles Service
+	if cfg.ProfilesServiceURL != "" {
+		if u, err := url.Parse(cfg.ProfilesServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/profiles/", proxy)
+		}
 	}
 
 	// Protected feed routes placeholder

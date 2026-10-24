@@ -41,6 +41,7 @@ type Profile struct {
 	LastName           string    `json:"last_name"`
 	Bio                string    `json:"bio,omitempty"`
 	AvatarURL          string    `json:"avatar_url,omitempty"`
+	CoverURL           string    `json:"cover_url,omitempty"`
 	DateOfBirth        string    `json:"date_of_birth"`
 	Gender             string    `json:"gender"`
 	PrivacyLevel       string    `json:"privacy_level"`

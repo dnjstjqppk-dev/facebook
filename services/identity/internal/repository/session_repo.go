@@ -103,3 +103,4 @@ func (r *InMemorySessionRepository) UpdateLastActive(ctx context.Context, sessio
 	s.LastActiveAt = t
 	return nil
 }
+

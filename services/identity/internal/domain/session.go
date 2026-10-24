@@ -18,3 +18,4 @@ type UserSession struct {
 	CreatedAt         time.Time `json:"created_at"`
 	LastActiveAt      time.Time `json:"last_active_at"`
 }
+

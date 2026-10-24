@@ -89,3 +89,4 @@ func generateCode(key []byte, step int64) string {
 
 	return fmt.Sprintf("%06d", code)
 }
+

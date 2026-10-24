@@ -147,3 +147,4 @@ func (s *LifecycleService) ExportUserData(ctx context.Context, userID string) ([
 
 	return json.MarshalIndent(exportPayload, "", "  ")
 }
+

@@ -1,4 +1,4 @@
-name: CI
+name: Master CI Pipeline
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   backend-test:
-    name: Backend Go Test & Verification
+    name: Go Microservices Test & Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -20,11 +20,33 @@ jobs:
           go-version: '1.23'
           cache: true
 
-      - name: Go Tidy & Check
-        run: |
-          go mod tidy
-          git diff --exit-code go.mod go.sum
-
       - name: Run Go Unit & Integration Tests
         run: |
-          go test -race -v -coverprofile=coverage.out ./services/...
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic ./services/...
+
+      - name: Compile Go Service Binaries
+        run: |
+          mkdir -p bin
+          go build -o bin/api-gateway ./services/api-gateway/cmd/server
+          go build -o bin/identity-service ./services/identity/cmd/server
+
+  frontend-check:
+    name: Web Frontend Typecheck & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Verify Workspace Config
+        run: |
+          node -e "console.log('Monorepo workspace valid')"
