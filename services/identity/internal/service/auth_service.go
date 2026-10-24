@@ -36,6 +36,26 @@ func (s *AuthService) Register(ctx context.Context, req *domain.RegisterRequest)
 		return nil, ErrEmptyFields
 	}
 
+	// Validate password strength
+	if err := domain.ValidatePasswordStrength(req.Password); err != nil {
+		return nil, err
+	}
+
+	// Calculate age and assign correct RBAC role
+	role := domain.RoleUserStandard
+	if req.DateOfBirth != "" {
+		age, err := domain.CalculateAge(req.DateOfBirth, time.Now().UTC())
+		if err != nil {
+			return nil, err
+		}
+		if age < 14 {
+			return nil, domain.ErrAgeUnderMinimum
+		}
+		if age < 18 {
+			role = domain.RoleUserMinor
+		}
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
@@ -50,7 +70,7 @@ func (s *AuthService) Register(ctx context.Context, req *domain.RegisterRequest)
 		PasswordHash:  string(hashedPassword),
 		Status:        domain.StatusActive,
 		EmailVerified: false,
-		Role:          domain.RoleUserStandard,
+		Role:          role,
 		CreatedAt:     now,
 		UpdatedAt:     now,
 	}
