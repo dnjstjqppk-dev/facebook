@@ -16,6 +16,7 @@ type GatewayConfig struct {
 	SocialGraphServiceURL string
 	ProfilesServiceURL    string
 	FeedServiceURL        string
+	MediaServiceURL       string
 	JWTSecret             string
 }
 
@@ -82,6 +83,18 @@ func NewGatewayRouter(cfg GatewayConfig) http.Handler {
 			})
 		})
 		mux.Handle("GET /api/v1/feed", authMw.RequireAuth(protectedFeed))
+	}
+
+	// Reverse proxy to Media Service
+	if cfg.MediaServiceURL != "" {
+		if u, err := url.Parse(cfg.MediaServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/media/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/stories", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/stories/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/reels", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/live/", authMw.RequireAuth(proxy))
+		}
 	}
 
 	// Chain middlewares: CORS -> Rate Limiter -> Mux

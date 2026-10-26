@@ -34,6 +34,11 @@ func main() {
 		feedURL = "http://localhost:8084"
 	}
 
+	mediaURL := os.Getenv("MEDIA_SERVICE_URL")
+	if mediaURL == "" {
+		mediaURL = "http://localhost:8085"
+	}
+
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		jwtSecret = "nova-enterprise-secure-jwt-secret-key-32chars"
@@ -44,6 +49,7 @@ func main() {
 		SocialGraphServiceURL: socialGraphURL,
 		ProfilesServiceURL:    profilesURL,
 		FeedServiceURL:        feedURL,
+		MediaServiceURL:       mediaURL,
 		JWTSecret:             jwtSecret,
 	}
 
