@@ -40,6 +40,8 @@ func (a *AuthMiddleware) RequireAuth(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(r.Context(), UserContextKey, claims)
+		r.Header.Set("X-User-ID", claims.UserID)
+		r.Header.Set("X-User-Role", string(claims.Role))
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

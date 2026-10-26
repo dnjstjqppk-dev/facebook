@@ -15,6 +15,7 @@ type GatewayConfig struct {
 	IdentityServiceURL    string
 	SocialGraphServiceURL string
 	ProfilesServiceURL    string
+	FeedServiceURL        string
 	JWTSecret             string
 }
 
@@ -60,17 +61,28 @@ func NewGatewayRouter(cfg GatewayConfig) http.Handler {
 		}
 	}
 
-	// Protected feed routes placeholder
-	protectedFeed := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		claims, _ := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]interface{}{
-			"message": "Welcome to protected feed route",
-			"user_id": claims.UserID,
-			"role":    claims.Role,
+	// Reverse proxy to Feed Service
+	if cfg.FeedServiceURL != "" {
+		if u, err := url.Parse(cfg.FeedServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/posts/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/feed", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/memories", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/saved", authMw.RequireAuth(proxy))
+		}
+	} else {
+		// Protected feed routes fallback
+		protectedFeed := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			claims, _ := r.Context().Value(middleware.UserContextKey).(*auth.JWTClaims)
+			w.Header().Set("Content-Type", "application/json")
+			_ = json.NewEncoder(w).Encode(map[string]interface{}{
+				"message": "Welcome to protected feed route",
+				"user_id": claims.UserID,
+				"role":    claims.Role,
+			})
 		})
-	})
-	mux.Handle("GET /api/v1/feed", authMw.RequireAuth(protectedFeed))
+		mux.Handle("GET /api/v1/feed", authMw.RequireAuth(protectedFeed))
+	}
 
 	// Chain middlewares: CORS -> Rate Limiter -> Mux
 	var handler http.Handler = mux

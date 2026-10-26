@@ -29,6 +29,11 @@ func main() {
 		profilesURL = "http://localhost:8083"
 	}
 
+	feedURL := os.Getenv("FEED_SERVICE_URL")
+	if feedURL == "" {
+		feedURL = "http://localhost:8084"
+	}
+
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		jwtSecret = "nova-enterprise-secure-jwt-secret-key-32chars"
@@ -38,6 +43,7 @@ func main() {
 		IdentityServiceURL:    identityURL,
 		SocialGraphServiceURL: socialGraphURL,
 		ProfilesServiceURL:    profilesURL,
+		FeedServiceURL:        feedURL,
 		JWTSecret:             jwtSecret,
 	}
 
