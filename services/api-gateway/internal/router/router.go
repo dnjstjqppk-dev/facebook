@@ -18,6 +18,13 @@ type GatewayConfig struct {
 	FeedServiceURL        string
 	MediaServiceURL       string
 	MessagingServiceURL   string
+	GroupsServiceURL      string
+	PagesServiceURL       string
+	EventsServiceURL      string
+	MarketplaceServiceURL string
+	PaymentsServiceURL    string
+	AdsServiceURL         string
+	ModerationServiceURL  string
 	JWTSecret             string
 }
 
@@ -109,6 +116,57 @@ func NewGatewayRouter(cfg GatewayConfig) http.Handler {
 			mux.Handle("/api/v1/presence/", authMw.RequireAuth(proxy))
 			mux.Handle("/api/v1/calls", authMw.RequireAuth(proxy))
 			mux.Handle("/api/v1/calls/", authMw.RequireAuth(proxy))
+		}
+	}
+
+	// Reverse proxy to Community Services (Groups, Pages, Events)
+	if cfg.GroupsServiceURL != "" {
+		if u, err := url.Parse(cfg.GroupsServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/groups", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/groups/", authMw.RequireAuth(proxy))
+		}
+	}
+	if cfg.PagesServiceURL != "" {
+		if u, err := url.Parse(cfg.PagesServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/pages", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/pages/", authMw.RequireAuth(proxy))
+		}
+	}
+	if cfg.EventsServiceURL != "" {
+		if u, err := url.Parse(cfg.EventsServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/events", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/events/", authMw.RequireAuth(proxy))
+		}
+	}
+
+	// Reverse proxy to Commerce Services (Marketplace, Payments)
+	if cfg.MarketplaceServiceURL != "" {
+		if u, err := url.Parse(cfg.MarketplaceServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/marketplace/", authMw.RequireAuth(proxy))
+		}
+	}
+	if cfg.PaymentsServiceURL != "" {
+		if u, err := url.Parse(cfg.PaymentsServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/payments/", authMw.RequireAuth(proxy))
+		}
+	}
+
+	// Reverse proxy to Ads and Moderation
+	if cfg.AdsServiceURL != "" {
+		if u, err := url.Parse(cfg.AdsServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/ads/", authMw.RequireAuth(proxy))
+		}
+	}
+	if cfg.ModerationServiceURL != "" {
+		if u, err := url.Parse(cfg.ModerationServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/moderation/", authMw.RequireAuth(proxy))
 		}
 	}
 
