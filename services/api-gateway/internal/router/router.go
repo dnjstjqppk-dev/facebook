@@ -17,6 +17,7 @@ type GatewayConfig struct {
 	ProfilesServiceURL    string
 	FeedServiceURL        string
 	MediaServiceURL       string
+	MessagingServiceURL   string
 	JWTSecret             string
 }
 
@@ -94,6 +95,20 @@ func NewGatewayRouter(cfg GatewayConfig) http.Handler {
 			mux.Handle("/api/v1/stories/", authMw.RequireAuth(proxy))
 			mux.Handle("/api/v1/reels", authMw.RequireAuth(proxy))
 			mux.Handle("/api/v1/live/", authMw.RequireAuth(proxy))
+		}
+	}
+
+	// Reverse proxy to Messaging Service
+	if cfg.MessagingServiceURL != "" {
+		if u, err := url.Parse(cfg.MessagingServiceURL); err == nil {
+			proxy := httputil.NewSingleHostReverseProxy(u)
+			mux.Handle("/api/v1/conversations/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/messages", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/messages/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/presence", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/presence/", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/calls", authMw.RequireAuth(proxy))
+			mux.Handle("/api/v1/calls/", authMw.RequireAuth(proxy))
 		}
 	}
 

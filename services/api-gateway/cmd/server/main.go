@@ -39,6 +39,11 @@ func main() {
 		mediaURL = "http://localhost:8085"
 	}
 
+	messagingURL := os.Getenv("MESSAGING_SERVICE_URL")
+	if messagingURL == "" {
+		messagingURL = "http://localhost:8086"
+	}
+
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		jwtSecret = "nova-enterprise-secure-jwt-secret-key-32chars"
@@ -50,6 +55,7 @@ func main() {
 		ProfilesServiceURL:    profilesURL,
 		FeedServiceURL:        feedURL,
 		MediaServiceURL:       mediaURL,
+		MessagingServiceURL:   messagingURL,
 		JWTSecret:             jwtSecret,
 	}
 
