@@ -83,3 +83,4 @@ func TestMakeAndAcceptOffer(t *testing.T) {
 		t.Errorf("expected item status PENDING after offer accepted, got %s", it.Status)
 	}
 }
+

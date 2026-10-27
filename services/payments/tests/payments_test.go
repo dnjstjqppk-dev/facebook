@@ -103,3 +103,4 @@ func TestCreator_StarsAndSubscriptions(t *testing.T) {
 		t.Fatalf("fan subscription failed: %v", err)
 	}
 }
+

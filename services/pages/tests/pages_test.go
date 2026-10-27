@@ -87,3 +87,4 @@ func TestPageInsights_AccessControl(t *testing.T) {
 		t.Errorf("expected ErrNotPageAdmin for outsider, got: %v", err)
 	}
 }
+

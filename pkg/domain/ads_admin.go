@@ -209,3 +209,4 @@ var (
 	ErrKillSwitchTriggered = errors.New("service feature is currently disabled by system kill switch")
 	ErrAppUnauthorized     = errors.New("developer app credentials unauthorized")
 )
+

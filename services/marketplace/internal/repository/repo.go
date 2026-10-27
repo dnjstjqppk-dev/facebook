@@ -80,3 +80,4 @@ func (r *InMemoryMarketplaceRepository) GetOffer(ctx context.Context, id string)
 	}
 	return offer, nil
 }
+

@@ -100,3 +100,4 @@ func (s *ModerationService) ApplyStrike(userID string) (*domain.UserStrike, erro
 func (s *ModerationService) GetUserStrike(userID string) (*domain.UserStrike, error) {
 	return s.repo.GetUserStrike(userID)
 }
+

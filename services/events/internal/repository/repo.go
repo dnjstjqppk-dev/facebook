@@ -60,3 +60,4 @@ func (r *InMemoryEventRepository) ListEventsByUser(ctx context.Context, userID s
 	}
 	return results, nil
 }
+

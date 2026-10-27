@@ -219,3 +219,4 @@ func (r *InMemoryMediaRepository) GetLiveStream(ctx context.Context, id string) 
 	}
 	return st, nil
 }
+

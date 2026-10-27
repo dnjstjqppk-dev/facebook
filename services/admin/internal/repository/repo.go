@@ -84,3 +84,4 @@ func (r *InMemoryAdminRepo) GetDeveloperApp(appID string) (*domain.DeveloperApp,
 	}
 	return app, nil
 }
+

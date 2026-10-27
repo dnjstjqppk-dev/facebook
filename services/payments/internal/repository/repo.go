@@ -114,3 +114,4 @@ func (r *InMemoryPaymentRepository) GetSubscription(ctx context.Context, id stri
 	}
 	return sub, nil
 }
+

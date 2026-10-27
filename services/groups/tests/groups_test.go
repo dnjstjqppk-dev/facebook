@@ -127,3 +127,4 @@ func TestGroupRules_AdminOnly(t *testing.T) {
 		t.Errorf("rules not saved correctly: %v", g.Rules)
 	}
 }
+

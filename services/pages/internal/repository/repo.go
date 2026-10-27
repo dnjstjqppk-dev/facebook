@@ -74,3 +74,4 @@ func (r *InMemoryPageRepository) GetPageInsights(ctx context.Context, pageID str
 		Period:         "Last 28 Days",
 	}, nil
 }
+

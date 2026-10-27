@@ -64,3 +64,4 @@ func TestModerationUserStrikeEscalation(t *testing.T) {
 		t.Fatalf("expected strike 4 PERMANENT_BAN, got: %+v", s4)
 	}
 }
+

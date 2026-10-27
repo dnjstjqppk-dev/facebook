@@ -72,3 +72,4 @@ func TestDeveloperCenter_GraphAPICredentials(t *testing.T) {
 		t.Errorf("expected ErrAppUnauthorized, got: %v", err)
 	}
 }
+

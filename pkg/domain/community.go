@@ -117,3 +117,4 @@ type Event struct {
 	RSVPs        map[string]RSVPStatus `json:"rsvps"` // userID -> status
 	CreatedAt    time.Time             `json:"created_at"`
 }
+

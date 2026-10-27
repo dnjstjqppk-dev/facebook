@@ -241,3 +241,4 @@ func TestInvalidChunk_Rejected(t *testing.T) {
 		t.Errorf("expected ErrInvalidChunk, got: %v", err)
 	}
 }
+

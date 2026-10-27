@@ -123,3 +123,4 @@ type FanSubscription struct {
 	CreatedAt        time.Time `json:"created_at"`
 	RenewsAt         time.Time `json:"renews_at"`
 }
+

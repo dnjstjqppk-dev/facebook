@@ -80,3 +80,4 @@ func (r *InMemoryGroupRepository) ListGroupPosts(ctx context.Context, groupID st
 	}
 	return results, nil
 }
+

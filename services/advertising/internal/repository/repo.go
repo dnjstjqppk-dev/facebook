@@ -217,3 +217,4 @@ func (r *InMemoryAdRepo) GetPartnerRoles(businessID string) ([]domain.BusinessPa
 	defer r.mu.RUnlock()
 	return r.partnerRoles[businessID], nil
 }
+

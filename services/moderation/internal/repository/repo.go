@@ -76,3 +76,4 @@ func (r *InMemoryModerationRepo) GetUserStrike(userID string) (*domain.UserStrik
 	}
 	return strike, nil
 }
+

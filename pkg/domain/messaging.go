@@ -93,3 +93,4 @@ type CallSession struct {
 	EndedAt     *time.Time `json:"ended_at,omitempty"`
 	CreatedAt   time.Time  `json:"created_at"`
 }
+

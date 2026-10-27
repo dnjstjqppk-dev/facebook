@@ -226,3 +226,4 @@ func TestNonMemberCannotSendMessage(t *testing.T) {
 		t.Errorf("expected ErrNotConversationMember, got: %v", err)
 	}
 }
+

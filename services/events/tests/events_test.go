@@ -89,3 +89,4 @@ func TestEvent_FilterByUserCalendar(t *testing.T) {
 		t.Errorf("expected Hackathon in calendar")
 	}
 }
+

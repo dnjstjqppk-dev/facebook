@@ -251,3 +251,4 @@ func (s *AdvertisingService) DelegatePartnerRole(businessID, partnerID, role str
 func (s *AdvertisingService) GetPartnerRoles(businessID string) ([]domain.BusinessPartnerRole, error) {
 	return s.repo.GetPartnerRoles(businessID)
 }
+
