@@ -2,10 +2,12 @@
   "name": "facebook-parity-platform",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@9.10.0",
   "description": "Enterprise-grade Global Social Network Master Monorepo",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "pnpm --filter @nova/shared-types run build && pnpm --filter @social/web run generate && node -e \"const fs=require('fs'); fs.cpSync('apps/web/.output/public', 'dist', {recursive:true});\"",
+    "build:all": "turbo run build",
+    "dev": "pnpm --filter @social/web run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "clean": "turbo run clean"
